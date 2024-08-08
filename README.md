@@ -212,6 +212,49 @@ extern "C" void app_main(void)
     .*....*.
     *......*
 ```
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "LED.h"
+
+LED led1(16); 
+LED led2(17); 
+LED led3(5); 
+LED led4(18); 
+LED led5(19); 
+LED led6(21); 
+LED led7(22); 
+LED led8(23); 
+
+LED leds[] = {led1, led2, led3, led4, led5, led6, led7, led8};
+
+extern "C" void app_main(void)
+{
+    int left = 0;
+    int right = 7;
+
+    while(1)
+    {
+        leds[left].ON();
+        leds[right].ON();
+        vTaskDelay(100/portTICK_PERIOD_MS);
+        leds[left].OFF();
+        leds[right].OFF();
+
+        left++;
+        right--;
+
+        if(left > right) 
+        {
+            left = 0;
+            right = 7;
+        }
+    }
+}
+```
+
+## https://drive.google.com/file/d/1upOxYm3Crq5WdewI0sC7oDkD7XrpPzLc/view?usp=drive_link
+
 
 3. ไฟวิ่งไปกลับ 
 ```
@@ -231,3 +274,46 @@ extern "C" void app_main(void)
     .*......
     *.......
 ```
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "LED.h"
+
+LED led1(16); 
+LED led2(17); 
+LED led3(5); 
+LED led4(18); 
+LED led5(19); 
+LED led6(21); 
+LED led7(22); 
+LED led8(23); 
+
+LED leds[] = {led1, led2, led3, led4, led5, led6, led7, led8};
+
+extern "C" void app_main(void)
+{
+    int i = 0;
+    int direction = 1; // 1 for forward, -1 for backward
+
+    while(1)
+    {
+        leds[i].ON();
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+        leds[i].OFF();
+
+        // Move to the next LED
+        i += direction;
+
+        // Check if we need to change direction
+        if (i == 7) // reached the end, switch direction to backward
+        {
+            direction = -1;
+        }
+        else if (i == 0) // reached the start, switch direction to forward
+        {
+            direction = 1;
+        }
+    }
+}
+```
+## [https://drive.google.com/file/d/1sn2xQQXMiRo4Y4xTulXHucqwGOHoPKhU/view?usp=drive_link](https://drive.google.com/file/d/1sn2xQQXMiRo4Y4xTulXHucqwGOHoPKhU/view?usp=sharing)
